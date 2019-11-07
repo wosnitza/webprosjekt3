@@ -19,9 +19,17 @@ app.layout = html.Div(id="main", children=[
                     html.P(children=["Input number of suppliers"]),
                     dcc.Input(id="supplierNr", type="number",
                               placeholder="Number of suppliers"),
-
+                    html.P(children="Input currencies"),
                 ]),
-
+                    dcc.Dropdown(
+                        id='dropdown-currencies',
+                        options=[
+                            {'label': 'US Dollars', 'value': 'USD'},
+                            {'label': 'Norwegian Kroner', 'value': 'NOK'},
+                            {'label': 'Swedish Kroner', 'value': 'SEK'}
+                        ],
+                        value='NYC'),
+                    html.Div(id='output-container')
             ]),
 
             html.Div(id="company", className="box", children=[
@@ -34,6 +42,8 @@ app.layout = html.Div(id="main", children=[
         ])
     ])
 ])
+
+
 
 if __name__ == '__main__':
     app.run_server(debug=True)
