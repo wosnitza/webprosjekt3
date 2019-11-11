@@ -36,7 +36,7 @@ final_list = map(' '.join, ent_cur_list)
 
 final_dict = dict(zip(final_list, ac_list))
 
-print(final_dict)
+# print(final_dict)
 
 
 # print(resource_list)
