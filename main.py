@@ -4,6 +4,7 @@ import dash_html_components as html
 from dash.dependencies import Input, Output
 import pandas as pd
 import numpy as np
+import customer
 
 app = dash.Dash(__name__)
 
@@ -29,6 +30,8 @@ app.layout = html.Div(id="main", children=[
             ]),
 
             html.Div(id="customer", className="box", children=[
+                html.H1(children=["Customer stats"]),
+
 
             ])
         ])
