@@ -1,7 +1,7 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from data.mockaroo import table
+from data.mockaroo import createTable
 
 from data.data import final_dict
 
@@ -71,7 +71,7 @@ stats_layout = html.Div(className="main", children=[
 
             # Company section
             html.Div(id="company", className="box", children=[
-                table
+                createTable()
             ]),
 
 

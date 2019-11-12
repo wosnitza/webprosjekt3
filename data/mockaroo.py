@@ -47,15 +47,22 @@ headers = {
     'cache-control': "no-cache"
     }
 
-response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
-rawData = pd.read_csv(io.StringIO(response.text))
-
-table = dash_table.DataTable(
-    id='table',
-    columns=[{"name": i, "id": i} for i in rawData.columns],
-    data=rawData.to_dict('records'),
-)
 
 
-print(table)
 
+def fetchMockaroo():
+    response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
+    data = pd.read_csv(io.StringIO(response.text))
+    return data
+
+
+def createTable(data):
+    fetchMockaroo()
+    return dash_table.DataTable(
+        id='table',
+        columns=[{"name": i, "id": i} for i in data.columns],
+        data=data.to_dict('records'),
+    )
+
+
+print(fetchMockaroo())
