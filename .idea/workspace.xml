@@ -1,19 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="00ed0744-4de6-43b3-b46a-e5f4a4bbae25" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.vscode/settings.json" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/bgwave.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/bgwave2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/bgwaveog.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/mockaroo.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/assets/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/assets/main.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-    </list>
+    <list default="true" id="00ed0744-4de6-43b3-b46a-e5f4a4bbae25" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +177,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573157755129</updated>
       <workItem from="1573157756996" duration="14155000" />
-      <workItem from="1573573803800" duration="10523000" />
+      <workItem from="1573573803800" duration="10863000" />
     </task>
     <task id="LOCAL-00001" summary="Adding first draft to git">
       <created>1573157889990</created>
