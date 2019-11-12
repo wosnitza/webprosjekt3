@@ -32,12 +32,19 @@ app.layout = html.Div(id="main", children=[
                 dcc.Dropdown(id="currencyChooser", options=[
                     {'label': k, 'value': v} for k, v in final_dict.items()],
                     placeholder="Select a currency..",
-                    searchable=True),
+                    multi=True),
                 html.Button("Submit", id="currencyBtn"),
                 html.Div(id="currencyOutput", children=[
                     # html.Ul(id="currencyList", children=[
                     # html.Li(children=[item]) for item in list_items
                     # ]),
+
+                ]),
+                html.H4(children="Please input your total procurement"),
+                dcc.Input(id="procInput", type="number",
+                          placeholder="Select total procurement"),
+                html.Button("Submit", id="procBtn"),
+                html.Div(id="procDiv", children=[
 
                 ]),
 
@@ -74,20 +81,38 @@ def showSupplierNr(n_clicks, value):
     [dash.dependencies.State("currencyChooser", "value")]
 )
 def addCurrency(n_clicks, value):
+    result_divs = []
+    result_divs.append(
+        html.P(children="Select how each currency influences your procurement in %"))
     if value:
-        return html.Div(id="currDiv" + str(value), children=[
-            html.Li(id="currLi" + str(value), children=[value]),
-            dcc.Input(id="currInput" + str(value), type="number")
-        ])
+        for i in value:
+            result_divs.append(html.Div(id="currDiv" + str(i), children=[
+                html.Li(id="currLi" + str(i), children=[i]),
+                dcc.Input(id="currInput" + str(i), type="number")
+            ])
+            )
+        return result_divs
     else:
         return html.P(children="Please select your used currencies!")
     #i += 1
-    #for o in range(i):
+    # for o in range(i):
         #o += 1
-        #return html.Div(id="currDiv" + str(o), children=[
-            #html.Li(id="currLi" + str(o), children=[value]),
-            #dcc.Input(id="currInput" + str(o), type="number")
-        #])
+        # return html.Div(id="currDiv" + str(o), children=[
+        #html.Li(id="currLi" + str(o), children=[value]),
+        #dcc.Input(id="currInput" + str(o), type="number")
+        # ])
+
+
+@app.callback(
+    dash.dependencies.Output("procDiv", "children"),
+    [dash.dependencies.Input("procBtn", "n_clicks")],
+    [dash.dependencies.State("procInput", "value")]
+)
+def showProc(n_clicks, value):
+    if value:
+        return "Total procurement: {}".format(value)
+    else:
+        return "Please input your total procurement!"
 
 
 if __name__ == '__main__':
