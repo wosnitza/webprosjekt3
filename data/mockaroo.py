@@ -56,8 +56,7 @@ def fetchMockaroo():
     return data
 
 
-def createTable(data):
-    fetchMockaroo()
+def createDatatable(data):
     return dash_table.DataTable(
         id='table',
         columns=[{"name": i, "id": i} for i in data.columns],
@@ -65,4 +64,10 @@ def createTable(data):
     )
 
 
-print(fetchMockaroo())
+def createTable():
+    fetchMockaroo()
+    table = createDatatable(fetchMockaroo())
+    return table
+
+
+print(createTable())
