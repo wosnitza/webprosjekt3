@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="00ed0744-4de6-43b3-b46a-e5f4a4bbae25" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/webprosjekt3.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/webprosjekt3.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -181,7 +179,7 @@
       <option name="presentableId" value="Default" />
       <updated>1573157755129</updated>
       <workItem from="1573157756996" duration="14155000" />
-      <workItem from="1573573803800" duration="11370000" />
+      <workItem from="1573573803800" duration="12001000" />
     </task>
     <task id="LOCAL-00001" summary="Adding first draft to git">
       <created>1573157889990</created>
