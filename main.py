@@ -12,26 +12,8 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.config.suppress_callback_exceptions = True
 
-app.layout = html.Div([
-    dcc.Location(id='url', refresh=False),
-    html.Div(id='page-content')
-])
-
-
-index_page = html.Div([
-    dcc.Link('Show FX lab', href='/page-1'),
-    html.Br(),
-    dcc.Link('Go to Page 2', href='/page-2'),
-])
-
-stats_layout = html.Div(className="main", children=[
+app.layout = html.Div(className="main", children=[
     html.Img(id="logo", src="/assets/logo.png"),
-
-    html.Div(id='page-1-content'),
-    html.Br(),
-    dcc.Link('Go to Page 2', href='/page-2'),
-    html.Br(),
-    dcc.Link('Go back to home', href='/'),
 
     html.Div(id="lab", children=[
 
@@ -78,6 +60,42 @@ stats_layout = html.Div(className="main", children=[
 
             ])
         ])
+    ]),
+
+    html.Div(className="main", children=[
+
+        # dcc.Dropdown(
+        # id='my-dropdown',
+        # options=[
+        #{'label': 'NOK', 'value': 'NOK'},
+        #{'label': 'USD', 'value': 'USD'},
+        #{'label': 'DKK', 'value': 'DKK'}
+        # ],
+        # value='USD'
+        # ),
+
+        dcc.Graph(
+            id='graph',
+            config={
+                'showSendToCloud': True,
+                'plotlyServerURL': 'https://plot.ly'
+            }
+        ),
+        html.Div(id="currGraphDiv", children=[
+
+        ]),
+        dcc.Graph(
+            id='currGraph',
+            figure={
+                'data': [
+                    {'x': [1, 2, 3], 'y': [4, 1, 2],
+                        'type': 'bar', 'name': 'SF'},
+                ],
+                'layout': {
+                    'title': 'Dash Data Visualization'
+                }
+            }
+        ),
     ])
 ])
 
@@ -124,16 +142,16 @@ def addCurrency(n_clicks, value):
         # ])
 
 
-@app.callback(
-    dash.dependencies.Output("currGraph", "figure"),
-    [dash.dependencies.Input("currPercentBtn", "n_clicks"),
-    dash.dependencies.Input("currencyChooser", "value")],
-    [dash.dependencies.State("currencyInputs", "value")]
-)
-def createCurrencyGraph(n_clicks, value1, value2):
-    fig = {}
-    fig = {'data': [{'x':[i for i in value1],'y':[i for i in value2],'type':'bar','name': 'update'}]}
-    return fig
+# @app.callback(
+   # dash.dependencies.Output("currGraph", "figure"),
+   # [dash.dependencies.Input("currPercentBtn", "n_clicks"),
+   # dash.dependencies.Input("currencyChooser", "value")],
+   # [dash.dependencies.State("currencyInputs", "value")]
+# )
+# def createCurrencyGraph(n_clicks, value1, value2):
+ #   fig = {}
+ #   fig = {'data': [{'x':[i for i in value1],'y':[i for i in value2],'type':'bar','name': 'update'}]}
+  #  return fig
 # for i in stats_layout['currencyOutput'].children
 
 
@@ -147,64 +165,6 @@ def showProc(n_clicks, value):
         return "Total procurement: {}".format(value)
     else:
         return "Please input your total procurement!"
-
-
-graphs_layout = html.Div(className="main", children=[
-
-    # dcc.Dropdown(
-    # id='my-dropdown',
-    # options=[
-    #{'label': 'NOK', 'value': 'NOK'},
-    #{'label': 'USD', 'value': 'USD'},
-    #{'label': 'DKK', 'value': 'DKK'}
-    # ],
-    # value='USD'
-    # ),
-
-    dcc.Graph(
-        id='graph',
-        config={
-            'showSendToCloud': True,
-            'plotlyServerURL': 'https://plot.ly'
-        }
-    ),
-    html.Div(id="currGraphDiv", children=[
-
-    ]),
-    dcc.Graph(
-        id='currGraph',
-        figure={
-            'data': [
-                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
-            ],
-            'layout': {
-                'title': 'Dash Data Visualization'
-            }
-        }
-    ),
-
-
-
-
-
-
-
-    html.Div(id='page-1-content'),
-    html.Br(),
-    dcc.Link('Go to Page 2', href='/page-2'),
-    html.Br(),
-    dcc.Link('Go back to home', href='/'),
-])
-
-@app.callback(dash.dependencies.Output('page-content', 'children'),
-              [dash.dependencies.Input('url', 'pathname')])
-def display_page(pathname):
-    if pathname == '/page-1':
-        return stats_layout
-    elif pathname == '/page-2':
-        return graphs_layout
-    else:
-        return index_page
 
 
 if __name__ == '__main__':
