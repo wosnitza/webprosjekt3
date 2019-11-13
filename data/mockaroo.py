@@ -5,7 +5,6 @@ import dash_table
 
 url = "https://api.mockaroo.com/api/generate.csv"
 
-querystring = {"key":"74cdb890","count":"4"}
 
 payload = """[
     {
@@ -50,7 +49,8 @@ headers = {
 
 
 
-def fetchMockaroo():
+def fetchMockaroo(value):
+    querystring = {"key": "204bb3e0", "count": value}
     response = requests.request("GET", url, data=payload, headers=headers, params=querystring)
     data = pd.read_csv(io.StringIO(response.text))
     return data
@@ -64,10 +64,10 @@ def createDatatable(data):
     )
 
 
-def createTable():
-    fetchMockaroo()
-    table = createDatatable(fetchMockaroo())
+def createTable(value):
+    fetchMockaroo(value)
+    table = createDatatable(fetchMockaroo(value))
     return table
 
 
-print(createTable())
+# print(createTable())

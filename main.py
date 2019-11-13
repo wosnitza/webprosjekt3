@@ -71,7 +71,14 @@ stats_layout = html.Div(className="main", children=[
 
             # Company section
             html.Div(id="company", className="box", children=[
-                createTable()
+                dcc.Input(id="companyAccounts", type="number",
+                          placeholder="Number of accounts",
+                          autoFocus=False),
+                html.Button("Submit", id="companyBtn", n_clicks=0),
+                html.Div(id="companyTable", children=[
+
+                ]),
+                # createTable()
             ]),
 
 
@@ -184,6 +191,23 @@ def showProc(n_clicks, value):
         return "Total procurement: {}".format(value)
     else:
         return "Please input your total procurement!"
+
+
+# Callback for Account table
+@app.callback(
+    dash.dependencies.Output("companyTable", "children"),
+    [dash.dependencies.Input("companyBtn", "n_clicks")],
+    [dash.dependencies.State("companyAccounts", "value")]
+)
+def createAccountTable(n_clicks, value):
+    if value:
+        return fetchMockData(value)
+    else:
+        return "Please enter number of accounts"
+
+
+def fetchMockData(value):
+    return createTable(value)
 
 
 graphs_layout = html.Div(className="main", children=[
