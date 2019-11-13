@@ -1,9 +1,8 @@
 import dash
 import dash_core_components as dcc
 import dash_html_components as html
-from dash.dependencies import Input, Output
-import pandas as pd
-import numpy as np
+from data.mockaroo import createTable
+
 from data import final_dict
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -39,7 +38,6 @@ app.layout = html.Div(className="main", children=[
                     # html.Ul(id="currencyList", children=[
                     # html.Li(children=[item]) for item in list_items
                     # ]),
-
                 ]),
                 html.H4(children="Please input your total procurement"),
                 dcc.Input(id="procInput", type="number",
@@ -52,12 +50,42 @@ app.layout = html.Div(className="main", children=[
 
             ]),
 
+
+            # Company section
             html.Div(id="company", className="box", children=[
-                html.P(children=["Heisann heisann kær"]),
+                dcc.Input(id="companyAccounts", type="number",
+                          placeholder="Number of accounts",
+                          autoFocus=False),
+                html.Button("Submit", id="companyBtn", n_clicks=0),
+                html.Div(id="companyTable", children=[
+
+                ]),
+                # createTable()
             ]),
 
-            html.Div(id="customer", className="box", children=[
 
+            # Customer section
+            html.Div(id="customer", className="box", children=[
+                html.H1(children=["Customer stats"]),
+                html.H4(children=["Input number of customers"]),
+                dcc.Input(id="customerNr", type="number",
+                          placeholder="Number of customers",
+                          autoFocus=False),
+                html.Button("Submit", id="customerBtn", n_clicks=0),
+                html.Div(id="customerNrOutput", children=[
+                ]),
+                html.H4(children=['Select your used currencies']),
+                dcc.Dropdown(id="currencyChooserCust", options=[
+                    {'label': k, 'value': v} for k, v in final_dict.items()],
+                             placeholder="Select a currency..",
+                             searchable=True),
+                html.Button("Submit", id="currencyBtnCust"),
+                html.Div(id="currencyOutputCust", children=[
+                    # html.Ul(id="currencyList", children=[
+                    # html.Li(children=[item]) for item in list_items
+                    # ]),
+
+                ])
             ])
         ])
     ]),
@@ -142,16 +170,32 @@ def addCurrency(n_clicks, value):
         # ])
 
 
-# @app.callback(
-   # dash.dependencies.Output("currGraph", "figure"),
-   # [dash.dependencies.Input("currPercentBtn", "n_clicks"),
-   # dash.dependencies.Input("currencyChooser", "value")],
-   # [dash.dependencies.State("currencyInputs", "value")]
-# )
-# def createCurrencyGraph(n_clicks, value1, value2):
- #   fig = {}
- #   fig = {'data': [{'x':[i for i in value1],'y':[i for i in value2],'type':'bar','name': 'update'}]}
-  #  return fig
+@app.callback(
+    dash.dependencies.Output("currencyOutputCust", "children"),
+    [dash.dependencies.Input("currencyBtnCust", "n_clicks")],
+    [dash.dependencies.State("currencyChooserCust", "value")]
+)
+def addCurrency(n_clicks, value):
+    if value:
+        return html.Div(id="currDiv" + str(value), children=[
+            html.Li(id="currLi" + str(value), children=[value]),
+            dcc.Input(id="currInput" + str(value), type="number")
+        ])
+    else:
+        return html.P(children="Please select your used currencies!")
+
+
+
+@app.callback(
+    dash.dependencies.Output("currGraph", "figure"),
+    [dash.dependencies.Input("currPercentBtn", "n_clicks"),
+    dash.dependencies.Input("currencyChooser", "value")],
+    [dash.dependencies.State("currencyInputs", "value")]
+)
+def createCurrencyGraph(n_clicks, value1, value2):
+    fig = {}
+    fig = {'data': [{'x':[i for i in value1],'y':[i for i in value2],'type':'bar','name': 'update'}]}
+    return fig
 # for i in stats_layout['currencyOutput'].children
 
 
@@ -165,6 +209,81 @@ def showProc(n_clicks, value):
         return "Total procurement: {}".format(value)
     else:
         return "Please input your total procurement!"
+
+
+# Callback for Account table
+@app.callback(
+    dash.dependencies.Output("companyTable", "children"),
+    [dash.dependencies.Input("companyBtn", "n_clicks")],
+    [dash.dependencies.State("companyAccounts", "value")]
+)
+def createAccountTable(n_clicks, value):
+    if value:
+        return fetchMockData(value)
+    else:
+        return "Please enter number of accounts"
+
+
+def fetchMockData(value):
+    return createTable(value)
+
+
+graphs_layout = html.Div(className="main", children=[
+
+    # dcc.Dropdown(
+    # id='my-dropdown',
+    # options=[
+    #{'label': 'NOK', 'value': 'NOK'},
+    #{'label': 'USD', 'value': 'USD'},
+    #{'label': 'DKK', 'value': 'DKK'}
+    # ],
+    # value='USD'
+    # ),
+
+    dcc.Graph(
+        id='graph',
+        config={
+            'showSendToCloud': True,
+            'plotlyServerURL': 'https://plot.ly'
+        }
+    ),
+    html.Div(id="currGraphDiv", children=[
+
+    ]),
+    dcc.Graph(
+        id='currGraph',
+        figure={
+            'data': [
+                {'x': [1, 2, 3], 'y': [4, 1, 2], 'type': 'bar', 'name': 'SF'},
+            ],
+            'layout': {
+                'title': 'Dash Data Visualization'
+            }
+        }
+    ),
+
+
+
+
+
+
+
+    html.Div(id='page-1-content'),
+    html.Br(),
+    dcc.Link('Go to Page 2', href='/page-2'),
+    html.Br(),
+    dcc.Link('Go back to home', href='/'),
+])
+
+@app.callback(dash.dependencies.Output('page-content', 'children'),
+              [dash.dependencies.Input('url', 'pathname')])
+def display_page(pathname):
+    if pathname == '/page-1':
+        return stats_layout
+    elif pathname == '/page-2':
+        return graphs_layout
+    else:
+        return index_page
 
 
 if __name__ == '__main__':
