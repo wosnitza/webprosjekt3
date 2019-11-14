@@ -17,5 +17,7 @@ chart1_layout = [
                 }
             }
         ),
-    ])
+    ]),
+    html.Button("Submit", id="testBtn"),
+    html.Div(id="testDiv")
 ]

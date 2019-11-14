@@ -12,7 +12,7 @@ parameters_layout = [
             html.Div(id="supplier", className="box", children=[
                 html.H1(children=["Supplier stats"]),
                 html.H4(children=["Input number of suppliers"]),
-                dcc.Input(id="supplierNr", type="number",
+                dcc.Input(id="supplierNr", persistence=True, type="number",
                           placeholder="Number of suppliers",
                           autoFocus=False),
                 html.Button("Submit", id="supplierBtn", n_clicks=0),
@@ -20,7 +20,7 @@ parameters_layout = [
 
                 ]),
                 html.H4(children=['Select your used currencies']),
-                dcc.Dropdown(id="currencyChooser", options=[
+                dcc.Dropdown(id="currencyChooser", persistence=True, options=[
                     {'label': k, 'value': v} for k, v in final_dict.items()],
                     placeholder="Select a currency..",
                     multi=True),
@@ -69,7 +69,7 @@ parameters_layout = [
                 dcc.Dropdown(id="currencyChooserCust", options=[
                     {'label': k, 'value': v} for k, v in final_dict.items()],
                     placeholder="Select a currency..",
-                    searchable=True),
+                    searchable=True,),
                 html.Button("Submit", id="currencyBtnCust"),
                 html.Div(id="currencyOutputCust", children=[
                     # html.Ul(id="currencyList", children=[
@@ -81,3 +81,18 @@ parameters_layout = [
         ])
     ])
 ]
+
+# Solution for tabs in separate folder
+
+
+@app.callback(
+    dash.dependencies.Output("appLayout", "children"),
+    [dash.dependencies.Input("mainTab", "value")]
+)
+def render_layout(tab):
+    if tab == "parameters_tab":
+        return parameters.parameters_layout
+    elif tab == "chart1_tab":
+        return chart1.chart1_layout
+    elif tab == "chart2_tab":
+        return chart2.chart2_layout
