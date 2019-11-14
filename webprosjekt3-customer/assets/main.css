@@ -1,0 +1,134 @@
+#boxes {
+  display: none;
+  grid-template-columns: auto auto auto;
+  justify-items: center;
+}
+
+#supplier {
+  grid-column: 1/1;
+}
+
+#company {
+  grid-column: 2/2;
+}
+
+#customer {
+  grid-column: 3/3;
+}
+
+.box {
+
+  opacity: 100%;
+  list-style-type: none;
+  text-decoration: none;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 5px;
+  background-color: white;
+  -webkit-animation: fadein .5s;
+
+}
+
+@keyframes fadein {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+.custom-tabs-container {
+  width: 100%;
+  font-size: 30px;
+
+}
+
+.custom-tabs {
+  background-color: #f9f9f9;
+  border-bottom: 1px solid #d6d6d6;
+
+
+}
+
+.custom-tab {
+  color: #586069;
+  border-top: 3px solid transparent !important;
+  border-left: 0px !important;
+  border-right: 0px !important;
+  border-bottom: 0px !important;
+  background-color: #fafbfc;
+  padding: 12px !important;
+  font-family: "system-ui";
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  -webkit-animation: fadein .5s;
+}
+
+#currGraph {
+  -webkit-animation: fadein .5s;
+  display: none;
+
+}
+
+#graph {
+  display: none;
+
+}
+
+
+
+body {
+  background-image: url("/assets/bgwaveog.png");
+}
+
+#logo {
+  width: 350px;
+}
+
+button {
+  background-color: rgb(253, 101, 101);
+  color: black;
+  font-size: 15px;
+  margin: 10px;
+
+}
+
+#currencyChooser {
+  width: 70%;
+}
+
+input {
+  width: 70%;
+  padding: 10px 0 0 0;
+}
+
+
+#upload-data {
+  background-color: white;
+  width: 100%;
+  font-size: 30px;
+  text-Align: center;
+  border-style: solid;
+  border-width: 2px;
+  text-decoration: none;
+
+}
+
+
+#output-data-upload h5,
+h6 {
+  -webkit-text-stroke-width: .5px;
+  -webkit-text-stroke-color: black;
+  color: white;
+  font-size: 30px;
+}
+
+#hidden {
+  width: 300px;
+  height: 300px;
+}
