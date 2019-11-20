@@ -90,18 +90,6 @@ def generate_list_of_invoices(year: int, amount_of_invoices: int, total_cost: fl
     return invoices
 
 
-def normalise_terms_vector():
-    """Use this to quickly copy a list of payment terms from Excel, and get a vector of normalised terms
-    in return. Use to verify """
-    dataset = pd.DataFrame()
-    terms_df = pd.read_clipboard()
-    terms = terms_df['0'].values.tolist()
-    result = [gf.normalise(int(x)) for x in terms]
-    dataset['Result'] = result
-    dataset.to_clipboard(index=False)
-    return
-
-
 def main():
     invoice_list = generate_list_of_invoices(2018, 100, 10000000, {'NOK': 80, 'EUR': 15, 'USD': 5})
     invoice_list.to_clipboard(index=False)
