@@ -6,6 +6,7 @@ from dash.dependencies import Input, Output, State
 from data.mockaroo import createTable
 from data.data import final_dict
 from dash.exceptions import PreventUpdate
+import plotly.graph_objects as go
 import json
 
 #For upload purposes, example taken from:
@@ -28,6 +29,7 @@ curr_list = []
 
 app.layout = html.Div(className="main", children=[
     html.Img(id="logo", src="/assets/logo.png"),
+    html.Button("Test", id="testButton"),
     html.Div(id="hidden", style={"display": "none"}),
 
     html.Div(id="tabDiv", children=[
@@ -37,7 +39,7 @@ app.layout = html.Div(className="main", children=[
                     html.Div(id="boxes", children=[
 
                         html.Div(id="supplier", className="box", children=[
-                            html.Button("Submit", id="testB"),
+                            #html.Button("Submit", id="testB"),
                             html.H1(children=["Supplier stats"]),
                             html.H4(children=["Number of suppliers"]),
                             dcc.Input(id="supplierNr", type="number",
@@ -215,18 +217,23 @@ app.layout = html.Div(className="main", children=[
 #@app.callback(
     #dash.dependencies.Output("currGraph", "figure"),
     #[dash.dependencies.Input("testB", "n_clicks")],
+    #[dash.dependencies.State("hidden", "children")],
     #[dash.dependencies.State("procDiv", "children")],
-    #[dash.dependencies.State("currInput{i}", "value") for i in curr_list]
+    #[dash.dependencies.State("currInput{i}", "value") for i in range(0,5)],
+    #[dash.dependencies.State("currInput{i}", "value") for i in range(0,5)],
+    #[dash.dependencies.State("currInput{i}", "value") for i in range(0,5)],
+    #[dash.dependencies.State("currInput{i}", "value") for i in range(0,5)],
+    #[dash.dependencies.State("currInput{i}", "value") for i in range(0,5)],
 #)
-#def test(n_clicks, children, value):
-    #curr_dict = {}
-    #curr_final_value = []
+#def test(n_clicks, json_data, procurement, value1, value2, value3, value4, value5):
+    #read_df = pd.read_json((json_data))
+    #new_df = pd.DataFrame(columns=[])
+    #for row in read_df.iterrows():
 
-    #for i in curr_list:
-        #curr_dict[i] = values[(value/100)*children]
+
     #fig={
         #'data': [
-                    #{'x': curr_dict.keys(), 'y': curr_dict.values(),
+                    #{'x': [for row in read_df.iterrows()], 'y': curr_dict.values(),
                     #'type': 'bar', 'name': 'SF'},
                 #],
         #'layout': {
@@ -300,16 +307,19 @@ def addCurrency(n_clicks, value):
     result_divs.append(
         html.P(children="Select how each currency influences your procurement in %"))
     if value:
-        result_divs.append(html.Button(("Submit"), id="currPercentBtn"))
-        for i in value:
-            curr_list.append(i)
+        #result_divs.append(html.Button(("Submit"), id="currPercentBtn"))
+        curr_list.append(value)
+        curr_df = pd.DataFrame(value)
+        for i in range(len(value)):
             result_divs.append(html.Div(id="currDiv" + str(i), children=[
-                html.Li(id="currLi" + str(i), children=[i]),
+                html.Li(id="currLi" + str(i), children=["Chosen currency "+str(i)]),
                 dcc.Input(id="currInput" + str(i),
                           className="currInputs", type="number")
             ])
             )
-        return result_divs, curr_list
+        print(curr_df)
+        print(value)
+        return result_divs, curr_df.to_json(date_format="iso", orient="split")
     else:
         return html.P(children="Please select your used currencies!"),html.P(children="Please select your used currencies!")
     #i += 1
@@ -436,6 +446,29 @@ def uploadParse(contents, filename):
                 #current_cogs = current_revenue * df.ix[4, "COGS"]
                 #current_netInc = current_revenue * df.ix[4, "NetInc"]
                 return [success_msg, current_revenue, current_cogs, current_netInc]
+            elif "json" in filename:
+                #df = pd.read_json(io.StringIO(decoded.decode('utf-8')))
+                pnl_distr, growth_dict = json.load(io.StringIO(decoded.decode('utf8')))
+                barName = pnl_distr.pop('Headers')
+                df = pd.DataFrame(pnl_distr)
+                print(df)
+                df = df.T
+                df.columns = barName
+                df.reset_index(level=0, inplace=True, col_fill="Year")
+                df.rename(columns={"index": "Year"}, inplace=True)
+                print(df)
+                print(df["Total Revenue [NOK]"])
+
+                success_msg = html.P("File upload was succesful!")
+                current_revenue = df.loc[4, "Total Revenue [NOK]"]
+                cogs = df.loc[4,"COGS"]
+                current_cogs = current_revenue * cogs
+                netInc = df.loc[4, "NetInc"]
+                current_netInc = current_revenue * netInc
+
+                return [success_msg, current_revenue, current_cogs, current_netInc]
+    
+
             else:
                 error_msg = "File must be of type .json!"
                 #filler = "Something"
