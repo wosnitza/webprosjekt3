@@ -4,6 +4,8 @@ import datetime
 import io
 import dash_table
 
+import dash_bootstrap_components as dbc
+
 import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output, State
@@ -11,13 +13,27 @@ from data.mockaroo import createTable
 from data.data import final_dict
 
 import pandas as pd
+import plotly.graph_objs as go
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
+filepath = 'test.csv'
+st = pd.read_csv(filepath)
+
+# Creates a table and sets headers to loook for
+trace_1 = go.Scatter(x=st.Date, y=st['AAPL.High'],
+                     name='AAPL HIGH',
+                     line=dict(width=2,
+                               color='rgb(229, 151, 50)'))
+layout = go.Layout(title='Graph',
+                   hovermode='closest')
+fig = go.Figure(data=[trace_1], layout=layout)
+
 
 app.config.suppress_callback_exceptions = True
+
 
 app.layout = html.Div(className="main", children=[
     html.Img(id="logo", src="/assets/logo.png"),
@@ -28,13 +44,16 @@ app.layout = html.Div(className="main", children=[
 
     html.Div(id="lab", className="main", children=[
 
+        html.Div(className="menu", children=[
         html.Button('Menu1', id="vbutton1"),
         html.Button('Menu2', id="vbutton2"),
         html.Button('Menu3', id="vbutton3"),
-
+        ]),
+        dcc.Graph(id='plot', figure=fig),
 
         html.Div(
             id="boxes",
+
             style={
                 'display': 'none'
             },
@@ -66,9 +85,6 @@ app.layout = html.Div(className="main", children=[
                     html.H4(children=['Select your used currencies']),
                     dcc.Dropdown(
                         id="currencyChooser",
-                        style={
-                'display': 'none'
-            },
                         options=[
 
                         {'label': k, 'value': v} for k, v in final_dict.items()],
@@ -100,10 +116,7 @@ app.layout = html.Div(className="main", children=[
                         children=[
 
                     ]),
-
-
                 ]),
-
 
             # Company section
             html.Div(
@@ -156,11 +169,7 @@ app.layout = html.Div(className="main", children=[
                 ])
             ])
         ])
-
-
-
     ]),
-
 
     dcc.Upload(
         id='upload-data',
@@ -191,16 +200,16 @@ app.layout = html.Div(className="main", children=[
         ),
     ]),
 
-    html.Div(className="main", children=[
-
-        dcc.Graph(
-            id='graph',
-            config={
-                'showSendToCloud': True,
-                'plotlyServerURL': 'https://plot.ly'
-            }
-        ),
-    ]),
+#    html.Div(className="main", children=[
+#
+#       dcc.Graph(
+#            id='graph',
+#            config={
+#                'showSendToCloud': True,
+#                'plotlyServerURL': 'https://plot.ly'
+#            }
+#       ),
+#    ]),
 ])
 
 
@@ -208,17 +217,17 @@ app.layout = html.Div(className="main", children=[
 
 
 def parse_contents(contents, filename, date):
-    content_type, content_string = contents.split(',')
+    content_type, content_string=contents.split(',')
 
-    decoded = base64.b64decode(content_string)
+    decoded=base64.b64decode(content_string)
     try:
         if 'csv' in filename:
             # Assume that the user uploaded a CSV file
-            df = pd.read_csv(
+            df=pd.read_csv(
                 io.StringIO(decoded.decode('utf-8')))
         elif 'xls' in filename:
             # Assume that the user uploaded an excel file
-            df = pd.read_excel(io.BytesIO(decoded))
+            df=pd.read_excel(io.BytesIO(decoded))
     except Exception as e:
         print(e)
         return html.Div([
@@ -246,22 +255,54 @@ def parse_contents(contents, filename, date):
 
 
 
-@app.callback(Output('boxes', 'style'),[Input('vbutton1', 'n_clicks')])
-def update_style(style):
-    if style:    
-        return {'display': 'grid'}
+# @app.callback([Output('boxes', 'style'),Output('graph', 'style'),Output('currGraph', 'style')],[Input('vbutton1', 'n_clicks'),Input('vbutton2', 'n_clicks'),Input('vbutton3', 'n_clicks')])
+# def update_style(click1,click2,click3):
+#    if click1==None and click2==None and click3==None:
+#       return {'display': 'none'},{'display': 'none'},{'display': 'none'}
+#    if(click1):
+#       return {'display': 'grid'},{'display': 'none'},{'display': 'none'}
+#    if(click2):
+#       return {'display': 'none'},{'display': 'block'},{'display': 'none'}
+#    if(click3):
+#       return {'display': 'none'},{'display': 'none'},{'display': 'block'}
 
-@app.callback(Output('graph', 'style'),[Input('vbutton2', 'n_clicks')])
-def update_style(style):
-    if style:    
-        return {'display': 'block'}
+
+@app.callback(Output('boxes', 'style'),[Input('vbutton1', 'n_clicks')])
+def update_style(click):
+    if click==None:
+       return {'display': 'none'}
+    if click%2==0:    
+       return {'display': 'none'}
+    else:
+        return {'display': 'grid',
+        'position': 'absolute'}
+
+
+@app.callback(Output('plot', 'style'),[Input('vbutton2', 'n_clicks')])
+def update_style(click):
+    if click==None:
+       return {'display': 'none'}
+    if click%2==0:    
+       return {'display': 'none'}
+    else:
+        return {'display': 'block',
+        'position': 'absolute',
+        'box-shadow': '10px 5px 5px black'}
 
 @app.callback(Output('currGraph', 'style'),[Input('vbutton3', 'n_clicks')])
-def update_style(style):
-    if style:    
-        return {'display': 'block'}
+def update_style(click):
+    if click==None:
+       return {'display': 'none'}
+    if click%2==0:    
+       return {'display': 'none'}
+    else:
+        return {'display': 'block',
+        'position': '',
+        'float': 'right',
+        'box-shadow': '10px 5px 5px black'}
 
 
+# Table over opplastet data
 @app.callback(Output('output-data-upload', 'children'),
               [Input('upload-data', 'contents')],
               [State('upload-data', 'filename'),

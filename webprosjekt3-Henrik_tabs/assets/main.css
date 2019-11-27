@@ -3,7 +3,9 @@
   justify-items: center;
   border-style: solid;
   border-width: 5px;
-  width: 98.8%;
+  width: 98.7%;
+  display: grid;
+
 }
 
 #supplier {
@@ -78,15 +80,14 @@ input {
 }
 
 
-#upload-data {
+#upload {
   background-color: white;
-  width: 100%;
-  font-size: 30px;
+  width: 90%;
+  font-size: 20px;
   text-Align: center;
   border-style: solid;
   border-width: 2px;
   text-decoration: none;
-
 }
 
 
@@ -105,7 +106,9 @@ h6 {
   justify-items: center;
 }
 
-.menu button {
+#vbutton1,
+#vbutton2,
+#vbutton3 {
   width: 33.33%;
   background-color: white;
   font-size: 30px;
@@ -114,4 +117,16 @@ h6 {
   border-color: black;
   border-radius: 0px;
 
+}
+
+#sliderDiv {
+  width: 70%;
+  padding-left: 30px;
+}
+
+#procDiv,
+#netIncomeOutput,
+#revDiv {
+  font-size: 30px;
+  padding: 20px;
 }
