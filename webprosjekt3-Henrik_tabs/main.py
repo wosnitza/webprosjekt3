@@ -38,7 +38,7 @@ app.layout = html.Div(className="main", children=[
             html.Div(id="parameters", children=[
                 html.Div(id="lab", className="main", children=[
 
-                    html.Div(id="boxes", children=[
+                    html.Div(id="boxes", style={'display': 'none'}, children=[
 
                         html.Div(id="supplier", className="box", children=[
                             #html.Button("Submit", id="testB"),
@@ -129,8 +129,8 @@ app.layout = html.Div(className="main", children=[
                     ])
                 ])
             ]),
-           #Chart 1
-            html.Div(id="chart1", children= [
+           #Graph 1
+            html.Div(id="chart1", style={'display': 'none'}, children= [
                 html.Div(className="main", children=[
                     dcc.Graph(
                         id='currGraph',
@@ -146,8 +146,8 @@ app.layout = html.Div(className="main", children=[
                     ),
                 ]),
             ]),
-            #chart 2
-            html.Div(id="chart2", children=[
+            #Graph 2
+            html.Div(id="chart2", style={'display': 'none'},     children=[
                 html.Div(className="main", children=[
                     dcc.Graph(
                         id='diffgraph',
@@ -196,7 +196,7 @@ def update_style(click):
        return {'display': 'none'}
     else:
         return {'display': 'block',
-        'position': '',
+        'position': 'relative',
         'float': 'right',
         'box-shadow': '10px 5px 5px black'}
 

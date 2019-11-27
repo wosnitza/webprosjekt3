@@ -4,7 +4,8 @@
   border-style: solid;
   border-width: 5px;
   width: 98.7%;
-  display: grid;
+
+
 
 }
 
@@ -28,6 +29,7 @@
   background-color: white;
   -webkit-animation: fadein .5s;
 
+
 }
 
 @keyframes fadein {
@@ -40,16 +42,17 @@
   }
 }
 
-.plot {}
 
 #currGraph {
   -webkit-animation: fadein .5s;
+
 
 
 }
 
 #diffgraph {
   -webkit-animation: fadein .5s;
+
 }
 
 
