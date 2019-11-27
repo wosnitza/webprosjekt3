@@ -8,6 +8,8 @@ from data.data import final_dict
 from dash.exceptions import PreventUpdate
 import plotly.graph_objects as go
 import json
+import dash_table
+from simulator_utils.invoice_generator import generate_list_of_invoices
 
 #For upload purposes, example taken from:
 #https://dash.plot.ly/dash-core-components/upload
@@ -29,7 +31,7 @@ curr_list = []
 
 app.layout = html.Div(className="main", children=[
     html.Img(id="logo", src="/assets/logo.png"),
-    html.Button("Test", id="testButton"),
+    html.Button("Test", id="invButton"),
     html.Div(id="hidden", style={"display": "none"}),
     html.Div(id="hidden2", style={"display": "none"}),
 
@@ -60,7 +62,8 @@ app.layout = html.Div(className="main", children=[
                             dcc.Dropdown(id="currencyChooser", options=[
                                 {'label': k, 'value': v} for k, v in final_dict.items()],
                                 placeholder="Select a currency..",
-                                multi=True),
+                                #multi=True
+                                ),
                             html.Button("Submit", id="currencyBtn"),
                             html.Div(id="currencyOutput", children=[
                                 # html.Ul(id="currencyList", children=[
@@ -149,7 +152,8 @@ app.layout = html.Div(className="main", children=[
                                 {'label': k, 'value': v} for k, v in final_dict.items()],
                                 placeholder="Select a currency..",
                                 searchable=True,
-                                multi=True),
+                                #multi=True
+                                ),
                             html.Button("Submit", id="currencyBtnCust"),
                             html.Div(id="currencyOutputCust", children=[
                                 # html.Ul(id="currencyList", children=[
@@ -169,6 +173,13 @@ app.layout = html.Div(className="main", children=[
                 ])
 
             ]),
+            html.Hr(),
+            
+            html.Div(id="invTable", children=[
+                dash_table.DataTable(id='table'),
+
+            ]),
+
             html.Hr(),
 
             html.Div(id="chart1", children= [
@@ -280,10 +291,14 @@ def showAvgInvoices(n_clicks, value):
     [dash.dependencies.State("avgInvoiceNr", "value")]
 )
 def showAvgInvoices(n_clicks, value):
-    return [
-        "You receive an average of {} invoices per month!".format(
-            value) if value and value > 0 else "Please select average number of invoices received per month!"
-    ]
+    if value:
+        return value
+    else:
+        return "Please select average number of invoices received per month!"
+    #return [
+        #"You receive an average of {} invoices per month!".format(
+            #value) if value and value > 0 else "Please select average number of invoices received per month!"
+   #]
 
 #Callback to select number of customers
 @app.callback(
@@ -301,32 +316,37 @@ def showSupplierNr(n_clicks, value):
 #Callback to select number of currencies
 #And then display them
 @app.callback(
-    [dash.dependencies.Output("currencyOutput", "children"),
-    dash.dependencies.Output("hidden", "children")],
-    [dash.dependencies.Input("currencyBtn", "n_clicks")],
-    [dash.dependencies.State("currencyChooser", "value")]
+    dash.dependencies.Output("currencyOutput", "children"),
+    #dash.dependencies.Output("hidden", "children")],
+    [dash.dependencies.Input("currencyChooser", "value")],
+    [dash.dependencies.State("currencyOutput", "children")]
 )
-def addCurrency(n_clicks, value):
-    result_divs = []
-    curr_list = []
-    result_divs.append(
-        html.P(children="Select how each currency influences your procurement in %"))
-    if value:
-        #result_divs.append(html.Button(("Submit"), id="currPercentBtn"))
-        curr_list.append(value)
-        curr_df = pd.DataFrame(value)
-        for i in range(len(value)):
-            result_divs.append(html.Div(id="currDiv" + str(i), children=[
-                html.Li(id="currLi" + str(i), children=["Chosen currency "+str(i)]),
-                dcc.Input(id="currInput" + str(i),
-                          className="currInputs", type="number")
-            ])
-            )
-        print(curr_df)
-        print(value)
-        return result_divs, curr_df.to_json(date_format="iso", orient="split")
+#def addCurrency(n_clicks, value):
+def currencyDistribution(value, existing_children):
+    #result_divs = []
+    #curr_list = []
+    #result_divs.append(
+        #html.P(children="Select how each currency influences your procurement in %"))
+    if value is None:
+        raise PreventUpdate
     else:
-        return html.P(children="Please select your used currencies!"),html.P(children="Please select your used currencies!")
+        currency = existing_children + [html.P(value), dcc.Input(id=str("percentage" + value), placeholder="%")]
+        return currency
+        #result_divs.append(html.Button(("Submit"), id="currPercentBtn"))
+        #curr_list.append(value)
+        #curr_df = pd.DataFrame(value)
+        #for i in value:
+            #result_divs.append(html.Div(id="currDiv" + str(i), children=[
+                #html.Li(id="currLi" + str(i), children=["Chosen currency "+str(i)]),
+                #dcc.Input(id="currInput" + str(i),
+                          #className="currInputs", type="number")
+            #])
+            #)
+        #print(curr_df)
+        #print(value)
+        #return result_divs#, curr_df.to_json(date_format="iso", orient="split")
+    #else:
+        #return html.P(children="Please select your used currencies!"),html.P(children="Please select your used currencies!")
     #i += 1
     # for o in range(i):
         #o += 1
@@ -531,35 +551,75 @@ def uploadSlider(contents, filename):
 def changeYearInfo(value, hidden_df):
     #hidden_info = json.loads(hidden_df)
     #new_df = pd.DataFrame(hidden_info)
-    dff = pd.read_json(hidden_df, orient="split")
-    print(dff)
-    stat_list = []
-    #for i, c in dff.iterrows():
-    #Tror dette funker nå
-    for i in dff.index:
-        if dff.loc[i, 'Year'] == value:
-            print(i)
-            #success_msg = html.P("File upload was succesful!")
-            #current_revenue = dff.loc[4, "Total Revenue [NOK]"]
-            #current_revenue = dff.loc[str(i), "Total Revenue [NOK]"]
-            current_revenue = dff.loc[i, "Total Revenue [NOK]"]
-            #current_revenue = dff['Total Revenue [NOK]'].iloc[i]
-            #cogs = dff.loc[4,"COGS"]
-            #cogs = dff['COGS'].iloc[i]
-            cogs = dff.loc[i, "COGS"]
-            current_cogs = current_revenue * cogs
-            #netInc = dff.loc[4, "NetInc"]
-            #netInc = dff['NetInc'].iloc[i]
-            netInc = dff.loc[i, "NetInc"]
-            current_netInc = current_revenue * netInc
-            print(current_revenue)
-            print(current_cogs)
-            print(current_netInc)
-            return [int(current_revenue), int(current_cogs), int(current_netInc)]
+    if not hidden_df:
+        raise PreventUpdate
+    if hidden_df:
+        dff = pd.read_json(hidden_df, orient="split")
+        #print(dff)
+        stat_list = []
+        #for i, c in dff.iterrows():
+        #Tror dette funker nå
+        for i in dff.index:
+            if dff.loc[i, 'Year'] == value:
+                print(i)
+                #success_msg = html.P("File upload was succesful!")
+                #current_revenue = dff.loc[4, "Total Revenue [NOK]"]
+                #current_revenue = dff.loc[str(i), "Total Revenue [NOK]"]
+                current_revenue = dff.loc[i, "Total Revenue [NOK]"]
+                #current_revenue = dff['Total Revenue [NOK]'].iloc[i]
+                #cogs = dff.loc[4,"COGS"]
+                #cogs = dff['COGS'].iloc[i]
+                cogs = dff.loc[i, "COGS"]
+                current_cogs = current_revenue * cogs
+                #netInc = dff.loc[4, "NetInc"]
+                #netInc = dff['NetInc'].iloc[i]
+                netInc = dff.loc[i, "NetInc"]
+                current_netInc = current_revenue * netInc
+                #print(current_revenue)
+                #print(current_cogs)
+                #print(current_netInc)
+                return [int(current_revenue), int(current_cogs), int(current_netInc)]
             #stat_list.append(current_revenue, current_cogs, current_netInc)
 
     #return stat_list
 
+@app.callback([
+    dash.dependencies.Output("table", "columns"), 
+    dash.dependencies.Output("table", "data")],
+    [dash.dependencies.Input("invButton", "n_clicks")],
+    [dash.dependencies.State("avgInvoicesOutput", "children"),
+    dash.dependencies.State("currencyOutput", "children"),
+    dash.dependencies.State("revDiv", "children"),
+    dash.dependencies.State("year_slider", "value")]
+)
+def createInvoices(clicks, invVal, currVal, revVal, yearVal):
+    if clicks is None:
+        raise PreventUpdate
+    else:
+        currency_codes = currVal[::2]
+        currency_percentages = currVal[1::2]
+
+        currency_code_parsed = []
+
+        for i, j in enumerate(currency_codes):
+            currency_code_parsed.append(currency_codes[i]["props"]["children"])
+
+        currency_perc_parsed = []
+
+        for i, j in enumerate(currency_percentages):
+            currency_perc_parsed.append(int(currency_percentages[i]["props"]["value"]))
+
+        currency_final = dict(zip(currency_code_parsed, currency_perc_parsed))
+
+        print(invVal)
+        print(currVal)
+        print(revVal)
+        print(yearVal)
+        print(currency_final)
+
+        df = generate_list_of_invoices(int(yearVal), int(invVal), int(revVal), currency_final)
+        return [{"name": i, "id": i} for i in df.columns], df.to_dict("records")
+    
 #Below is the upload file callback function
 #But it is designed for use with JSON
             #if 'json' in content_type and 'json' in filename:
