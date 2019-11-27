@@ -534,26 +534,28 @@ def changeYearInfo(value, hidden_df):
     dff = pd.read_json(hidden_df, orient="split")
     print(dff)
     stat_list = []
-    for i, c in dff.iterrows():
-        if i == value:
+    #for i, c in dff.iterrows():
+    #Tror dette funker nå
+    for i in dff.index:
+        if dff.loc[i, 'Year'] == value:
             print(i)
             #success_msg = html.P("File upload was succesful!")
             #current_revenue = dff.loc[4, "Total Revenue [NOK]"]
             #current_revenue = dff.loc[str(i), "Total Revenue [NOK]"]
-            current_revenue = dff.loc[i, c["Total Revenue [NOK]"]]
+            current_revenue = dff.loc[i, "Total Revenue [NOK]"]
             #current_revenue = dff['Total Revenue [NOK]'].iloc[i]
             #cogs = dff.loc[4,"COGS"]
             #cogs = dff['COGS'].iloc[i]
-            cogs = dff.loc[str(i), "COGS"]
+            cogs = dff.loc[i, "COGS"]
             current_cogs = current_revenue * cogs
             #netInc = dff.loc[4, "NetInc"]
             #netInc = dff['NetInc'].iloc[i]
-            netInc = dff.loc[str(i), "NetInc"]
+            netInc = dff.loc[i, "NetInc"]
             current_netInc = current_revenue * netInc
             print(current_revenue)
             print(current_cogs)
             print(current_netInc)
-            return [current_revenue, current_cogs, current_netInc]
+            return [int(current_revenue), int(current_cogs), int(current_netInc)]
             #stat_list.append(current_revenue, current_cogs, current_netInc)
 
     #return stat_list
