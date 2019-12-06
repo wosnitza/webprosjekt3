@@ -111,8 +111,9 @@ h6 {
 
 #vbutton1,
 #vbutton2,
-#vbutton3 {
-  width: 33.33%;
+#vbutton3,
+#vbutton4 {
+  width: 25%;
   background-color: white;
   font-size: 30px;
   border-style: solid;
@@ -132,4 +133,9 @@ h6 {
 #revDiv {
   font-size: 30px;
   padding: 20px;
+}
+
+#chart3 {
+  width: 100%;
+  background-color: white;
 }

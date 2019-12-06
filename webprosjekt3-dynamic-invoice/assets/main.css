@@ -1,0 +1,29 @@
+#boxes {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+#supplier {
+  grid-column: 1/1;
+  background-color: grey;
+}
+
+#company {
+  grid-column: 2/2;
+  background-color: blue;
+}
+
+#customer {
+  grid-column: 3/3;
+  background-color: red;
+}
+
+.box {
+  height: 1000px;
+  width: 400px;
+}
+
+#parameters {
+  width: 500px;
+}
+
