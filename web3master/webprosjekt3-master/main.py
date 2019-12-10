@@ -23,12 +23,13 @@ app.layout = dbc.Container(children=[
         dbc.Tab(id='Tab one', label="Parameters", labelClassName="menu", children=[
             dbc.Row([
                 dbc.Col(id="file-upload", children=[
-                    html.Img(className="dragdrop", src="assets/dragdrop.png"),
                     dcc.Upload(
                         id='upload',
-                        children=html.Div([
+                        children=html.Div(className="dropWrap", children=[
                             html.A('Drag and drop'),
-                            html.P('or select files')
+                            html.Br(),
+                            html.Button('or select files',
+                                        className="uploadBtn")
                         ]),
                     )
                 ])
@@ -38,7 +39,7 @@ app.layout = dbc.Container(children=[
                     html.H1("Supplier stats"),
                     dbc.Label("Yearly Invoices"),
                     dbc.Input(id="invoice-yearly-supplier", className="inputs", type="number",
-                              placeholder="Invoices per. year"),
+                              placeholder=""),
                     dbc.Label("Invoice year"),
                     dcc.Dropdown(id="invoice-year-supplier",
                                  options=[
@@ -48,11 +49,11 @@ app.layout = dbc.Container(children=[
                                      {'label': '2017', 'value': '2017'},
                                      {'label': '2018', 'value': '2018'}
                                  ],
-                                 placeholder="Select Year"
+                                 placeholder=""
                                  ),
                     dbc.Label("Total procurement"),
                     dbc.Input(id="total-procurement", type="number",
-                              placeholder="Select total procurement"),
+                              placeholder=""),
                     html.Div(id="currency-container-supplier", children=[
                         dbc.Label("Currency distribution"),
                         dcc.Dropdown(id="currency-selector-supplier",
@@ -66,13 +67,13 @@ app.layout = dbc.Container(children=[
                         html.Div(id="currency-percentage-supplier", children=[
                         ]),
                     ]),
-                    dbc.Button("Generate", id="chart-generator"),
+
                 ]),
                 dbc.Col(id="company", children=[
                     html.H1("Company stats"),
                     dbc.Label("Accounts"),
                     dbc.Input(id="companyAccounts", type="number",
-                              placeholder="Number of accounts",
+                              placeholder="",
                               autoFocus=False),
                     html.Div(id="companyTable", children=[
 
@@ -80,24 +81,29 @@ app.layout = dbc.Container(children=[
 
                     dbc.Label("Net income"),
                     dbc.Input(id="netIncomeInput", type="number",
-                              placeholder="Net income"),
+                              placeholder=""),
                     html.Div(id="netIncomeOutput", children=[
 
                     ]),
 
                     dbc.Label("Organization ID"),
                     dbc.Input(id="orgIdInput", type="number",
-                              placeholder="Organization ID"),
+                              placeholder=""),
                     html.Div(id="orgIdOutput", children=[
 
                     ]),
                     html.Div(id="sliderDiv"),
+                    html.Br(),
+                    html.Br(),
+                    html.Br(),
+
+
                 ]),
                 dbc.Col(id="customer", children=[
                     html.H1("Customer stats"),
                     dbc.Label("Yearly Invoices"),
                     dbc.Input(id="invoice-monthly-customer", type="number",
-                              placeholder="Invoices per year"),
+                              placeholder=""),
                     dbc.Label("Invoice year"),
                     dcc.Dropdown(id="invoice-year-customer",
                                  options=[
@@ -107,11 +113,11 @@ app.layout = dbc.Container(children=[
                                      {'label': '2017', 'value': '2017'},
                                      {'label': '2018', 'value': '2018'}
                                  ],
-                                 placeholder="Select Year"
+                                 placeholder=""
                                  ),
                     dbc.Label("Total Revenue"),
                     dbc.Input(id="total-revenue", type="number",
-                              placeholder="Select total revenue"),
+                              placeholder=""),
                     dbc.Label("Currency distribution"),
                     dcc.Dropdown(id="currency-selector-customer",
                                  options=[
@@ -124,9 +130,15 @@ app.layout = dbc.Container(children=[
                     html.Div(id="currency-percentage-customer", children=[
                     ]),
 
-                ])
-            ])
+                ]),
+
+
+            ]),
+            html.Div(className="line"),
+            dbc.Button("GENERATE", id="chart-generator"),
         ]),
+
+
         # Tab for tables or charts
         # dbc.Tab(id="tab-two", label='Invoice Suppliers', children=[
         #     dash_table.DataTable(id='table-supplier'),
@@ -139,9 +151,9 @@ app.layout = dbc.Container(children=[
             html.H1("Exposure chart"),
             dbc.Row([
                 dbc.Col(id="exposure-data", width=4, children=[
-                    dcc.Dropdown(id="exposure-year", placeholder="Year"),
+                    dcc.Dropdown(id="exposure-year", placeholder=""),
                     dcc.Dropdown(id="exposure-type",
-                                 placeholder="Exposure Type"),
+                                 placeholder=""),
                     html.Div(id="exposure-overview")
                 ]),
                 dbc.Col(id="exposure", children=[
@@ -149,13 +161,23 @@ app.layout = dbc.Container(children=[
                     dash_table.DataTable(id='exposure-table'),
                 ])
             ]),
-            dbc.Button("Generate exposure", id="generate"),
+            html.Button("Generate exposure", id="generate"),
         ]),
+
         # Hidden divs for storing data from callbacks
         html.Div(id="hidden2", style={"display": "none"}),
         html.Div(id="hidden-df-exposure", style={"display": "none"}),
         html.Div(id="hidden-div-company", style={"display": "none"}),
+
+    ]),
+
+
+    html.Div(className="footer", children=[
+        html.P(className="footerText", children=[
+            'Created by: Henrik Eikeland, Vetle Wosnitza, Bjørn Gyles, Ulrik Weum and Jeppe Westerby'
+        ])
     ])
+
 ])
 
 
@@ -245,7 +267,7 @@ def currencyPercentageSupplier(value, existingchildren):
     else:
         currency = existingchildren + \
             [html.P(value), dbc.Input(
-                id=str("percentage" + value), placeholder="%")]
+                id=str("percentage" + value), placeholder="")]
         return currency
 
 
@@ -261,7 +283,7 @@ def currencyPercentageSupplier(value, existingchildren):
     else:
         currency = existingchildren + \
             [html.P(value), dbc.Input(
-                id=str("percentage" + value), placeholder="%")]
+                id=str("percentage" + value), placeholder="")]
         return currency
 
 

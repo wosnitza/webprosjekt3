@@ -16,18 +16,23 @@ body {
 #parameters {}
 
 #file-upload {
-  height: 60px;
+  height: 200px;
   width: 100%;
   text-align: center;
   font-size: 33px;
-  margin: 10px 0 40px 0;
+  margin: 5% 0 5% 0;
   border-style: none;
-  border-
+  background-color: rgba(243, 237, 237, 0.644);
+  border-style: dashed;
+  border-color: rgb(177, 176, 176);
+  border-radius: 5px;
+  cursor: pointer;
 }
 
-#file-upload:hover {
-  text-decoration: underline;
+.dropWrap {
+  padding-top: 50px;
 }
+
 
 h1 {
 
@@ -35,10 +40,22 @@ h1 {
   font-size: 27px;
 }
 
-input,
-dropdown {
-  background: #ffffff;
+
+.form-control,
+.inputs,
+.Select-placeholder,
+.Select-control {
+  background-color: transparent;
+  border: 0px solid;
   color: black;
+  border-bottom: 1px solid;
+  border-radius: 0px;
+  border-color: rgb(218, 217, 217);
+
+}
+
+.Select-control {
+  border: none;
 }
 
 
@@ -60,18 +77,34 @@ label {
 #chart-generator {
   background-color: rgb(239, 71, 70);
   color: white;
-  width: 100%;
+  width: 25%;
   font-size: 20px;
   margin-top: 30px;
-  border-radius: 10px;
+  border-radius: 0px;
+  margin-left: 38%;
+  border-radius: 5px;
+}
+
+.uploadBtn {
+  background-color: rgb(239, 71, 70);
+  color: white;
+  width: 25%;
+  font-size: 20px;
+  margin-top: 30px;
+  border-radius: 5px;
+}
+
+#generate {
+  background-color: rgb(239, 71, 70);
+  color: white;
+  width: 25%;
+  font-size: 20px;
+  border-radius: 5px;
 }
 
 label {
   padding-top: 10px;
 }
-
-
-
 
 tbody {
   background-color: white;
@@ -87,13 +120,10 @@ tbody {
 
 .menu:hover {
   border: none;
-  /* color: yellow; SJEKK DET HER */
   text-align: center;
   font-size: 30px;
   padding: 15px 15px;
   transition: 0.3s;
-
-
 }
 
 .nav-tabs .nav-item.show .nav-link,
@@ -132,13 +162,42 @@ tbody {
 
 #sliderDiv {}
 
-.dragdrop {
-  height: 50px;
-  padding-top: 4px;
-  position: absolute;
-  margin-left: 15%;
-}
 
 #upload p {
   font-size: 15px;
+}
+
+.nav-item:nth-child(4),
+.nav-item:nth-child(5),
+.nav-item:nth-child(6) {
+  display: none;
+}
+
+.footer {
+  height: 100px;
+  background-color: rgba(243, 237, 237, 0.644);
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+
+.footerText {
+  float: right;
+  margin-top: 70px;
+  margin-right: 10px;
+  opacity: 50%;
+}
+
+.line {
+  height: 2px;
+  background-color: rgba(243, 237, 237, 0.644);
+  margin-top: 50px;
+}
+
+#orgIdInput {
+  cursor: not-allowed;
+}
+
+#companyAccounts {
+  cursor: not-allowed;
 }
