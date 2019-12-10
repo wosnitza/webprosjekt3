@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 body {
   font-family: montserrat, sans-serif;
   font-style: normal;
@@ -198,3 +199,19 @@ tbody {
 #companyAccounts {
   cursor: not-allowed;
 }
+=======
+#boxes {
+  display: grid;
+  grid-template-columns: auto auto auto;
+}
+
+.box {
+  height: 1000px;
+  width: 400px;
+}
+
+#parameters {
+  width: 500px;
+}
+
+>>>>>>> master
