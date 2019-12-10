@@ -1,0 +1,16 @@
+norm_header,loops,other,grouping,norganic,norganic_for_summarising
+Amount,Invoice_Amount,Invoice Amount,Amount,ExchangeAmount_2,ExchangeAmount_2
+Invoice_Date,Invoice_Date,Invoice Date,Invoice_Date,DeliveryDate,OrderDate
+Due_Date,Payment_Date,Payment Date,Due_Date,Due Date,DeliveryDate
+Invoice_Currency,Invoice_Currency,Invoice Currency,Currency,Currency,Currency
+Payment_Currency,Payment_Currency,Payment Currency,Payment Currency,,
+Category,,,Category,Category,
+Amount_[NOK],,,,,Amount [NOK]
+Supplier_Name,,,,Supplier,Supplier
+Country,,,,Country,Country
+Due_Date_Plus_30,,,,,Due Date
+Rate,,,,,ExchangeRate
+Currency,,,,,Currency
+Cost_Center,,,,,GLAccountDescr
+Date_Columns,"['Invoice_Date', 'Payment_Date']","['Invoice Date', 'Payment Date']","['Invoice_Date', 'Due_Date']","['Due Date', 'DeliveryDate', 'OrderDate']","['DeliveryDate', 'OrderDate']"
+Amount_Columns,['Invoice_Amount'],['Invoice Amount'],['Amount'],['ExchangeAmount'],"['ExchangeAmount_2', 'Amount [NOK]']"
