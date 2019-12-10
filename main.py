@@ -36,8 +36,9 @@ app.layout = dbc.Container(children=[
             ]),
             dbc.Row([
                 dbc.Col(id="supplier", children=[
+                    html.Div(id="triangle", style={"display": "none"}),
                     html.H1("Supplier stats"),
-                    dbc.Label("Yearly Invoices"),
+                    dbc.Label("Yearly Invoices", id="yer"),
                     dbc.Input(id="invoice-yearly-supplier", className="inputs", type="number",
                               placeholder=""),
                     dbc.Label("Invoice year"),
@@ -161,7 +162,6 @@ app.layout = dbc.Container(children=[
                     dash_table.DataTable(id='exposure-table'),
                 ])
             ]),
-            html.Button("Generate exposure", id="generate"),
         ]),
 
         # Hidden divs for storing data from callbacks
@@ -179,6 +179,7 @@ app.layout = dbc.Container(children=[
     ])
 
 ])
+
 
 
 """Test code for set up company"""
