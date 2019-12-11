@@ -29,5 +29,5 @@ Inside the web application you will be met by several inputs.
  6. This will populate the Accounting tab and Exposure tab with charts and data.
 
 
-## PS.
+## MAC.
 For MAC you have to comment out the paths for windows and comment in the paths for MAC in simulator_constants.py and simulator_common\exchange_rates.py, and reformat the paths to your APPS folder location
