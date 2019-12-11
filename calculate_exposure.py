@@ -50,6 +50,8 @@ def generate_mock_company(company, sales, procurement, net_income):
     combined_set = pd.concat([pd.concat(proc_dataset, ignore_index=True), pd.concat(sales_dataset, ignore_index=True)],
                              ignore_index=True)
 
+    invoice_df = combined_set
+
     # Add a few rows of net income to the procurement dataset so it it taken in as well
     for year in sc.YEARS:
         netinc_row = [net_income[int(year)],
@@ -86,7 +88,7 @@ def generate_mock_company(company, sales, procurement, net_income):
     distribution_dict = icd.convert_to_matrices(
         currencies, percentages, totals)
 
-    return pnl_distribution, yoy_growth_dict, distribution_dict
+    return pnl_distribution, yoy_growth_dict, distribution_dict, invoice_df
 
 
 def load_pnl_and_currency_data(pnl_distribution, yoy_growth_dict, distribution_dict) -> 'Some Dataframes':
