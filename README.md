@@ -27,3 +27,7 @@ Inside the web application you will be met by several inputs.
  4. For both supplier side and customer side fill out currency distribution. (For example: **Supplier**: USD: 40%, NOK: 50%, EUR: 10% and **Customer**: USD: 50%, NOK: 50%)
  5. Click generate.
  6. This will populate the Accounting tab and Exposure tab with charts and data.
+
+
+## PS.
+For MAC you have to comment out the paths for windows and comment in the paths for MAC in simulator_constants.py and simulator_common\exchange_rates.py
