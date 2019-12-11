@@ -30,4 +30,4 @@ Inside the web application you will be met by several inputs.
 
 
 ## PS.
-For MAC you have to comment out the paths for windows and comment in the paths for MAC in simulator_constants.py and simulator_common\exchange_rates.py
+For MAC you have to comment out the paths for windows and comment in the paths for MAC in simulator_constants.py and simulator_common\exchange_rates.py, and reformat the path to your APPS folder location
