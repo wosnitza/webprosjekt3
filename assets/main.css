@@ -61,7 +61,7 @@ h1 {
 
 
 li {
-  width: 33.33%;
+  width: 25%;
 }
 
 .nav-item:active {
@@ -167,9 +167,11 @@ tbody {
   font-size: 15px;
 }
 
-.nav-item:nth-child(4),
+
 .nav-item:nth-child(5),
-.nav-item:nth-child(6) {
+.nav-item:nth-child(6),
+.nav-item:nth-child(7)
+{
   display: none;
 }
 
