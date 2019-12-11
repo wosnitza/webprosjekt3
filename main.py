@@ -143,9 +143,9 @@ app.layout = dbc.Container(children=[
         # dbc.Tab(id="tab-two", label='Invoice Suppliers', children=[
         #     dash_table.DataTable(id='table-supplier'),
         # ]),
-        # dbc.Tab(id="tab-three", label='Invoice Customers', children=[
-        #     dash_table.DataTable(id='table-customer'),
-        # ]),
+        dbc.Tab(id="tab-three", label='Invoices', labelClassName="menu", children=[
+            dash_table.DataTable(id='table-invoices'),
+        ]),
         dbc.Tab(id="tab-four", label="Accounting", labelClassName="menu"),
         dbc.Tab(id='tab-five', label="Exposure", labelClassName="menu", children=[
             html.H1("Exposure chart"),
@@ -185,7 +185,9 @@ app.layout = dbc.Container(children=[
 
 
 @app.callback(
-    Output("hidden-div-company", "children"),
+    [Output("hidden-div-company", "children"),
+     Output("table-invoices", "columns"),
+     Output("table-invoices", "data")],
     [Input("chart-generator", "n_clicks")],
     [State("invoice-yearly-supplier", "value"),
      State("invoice-year-supplier", "value"),
@@ -233,7 +235,8 @@ def createCharts(clicks, yearly_invoices, year, net_inc, total_revenue, currency
                                'Sales_Currency_Distribution': currency_dist_customer}
                    }
         company, sales, procurement, net_income = ce.cc.set_up_company(company)
-        pnl_distribution, yoy_growth_dict, distribution_dict = \
+
+        pnl_distribution, yoy_growth_dict, distribution_dict, invoice_df = \
             ce.generate_mock_company(company, sales, procurement, net_income)
 
         pnl_distribution, yoy_growth_dict, distribution_dict, currencies, currency_risks, account_factor_vector = \
@@ -249,7 +252,7 @@ def createCharts(clicks, yearly_invoices, year, net_inc, total_revenue, currency
 
         exposure_df = exposure_df.to_json(date_format="iso", orient="split")
 
-        return exposure_df
+        return exposure_df, [{"name": i, "id": i} for i in invoice_df.columns], invoice_df.to_dict('records')
 
 
 """Test code for set up company"""
