@@ -290,66 +290,6 @@ def currencyPercentageSupplier(value, existingchildren):
         return currency
 
 
-# Callback for invoice generator. Outputs tables in tabs
-# @app.callback(
-#     [Output("table-supplier", "columns"), Output("table-supplier", "data")],
-#     [Input("chart-generator", "n_clicks")],
-#     [State("invoice-monthly-supplier", "value"),
-#      State("invoice-year-supplier", "value"),
-#      State("total-procurement", "value"),
-#      State("currency-percentage-supplier", "children")],
-# )
-# def createCharts(clicks, monthly, year, amount, currencylist):
-#     if clicks is None:
-#         raise PreventUpdate
-#     else:
-#         currencycodes = currencylist[::2]
-#         currpercentages = currencylist[1::2]
-#
-#         currencycodeparsed = []
-#         for i, j in enumerate(currencycodes):
-#             currencycodeparsed.append(currencycodes[i]["props"]["children"])
-#
-#         currencypercparsed = []
-#         for i, j in enumerate(currpercentages):
-#             currencypercparsed.append(int(currpercentages[i]["props"]["value"]))
-#
-#         currency_final = dict(zip(currencycodeparsed, currencypercparsed))
-#
-#         df = generate_list_of_invoices(int(year), int(monthly), int(amount), currency_final, "COGS")
-#         return [{"name": i, "id": i} for i in df.columns], df.to_dict('records')
-
-
-# Callback for invoice generator customer side. Outputs tables in tabs
-# @app.callback(
-#     [Output("table-customer", "columns"), Output("table-customer", "data")],
-#     [Input("chart-generator", "n_clicks")],
-#     [State("invoice-monthly-customer", "value"),
-#      State("invoice-year-customer", "value"),
-#      State("total-revenue", "value"),
-#      State("currency-percentage-customer", "children")],
-# )
-# def createCharts(clicks, monthly, year, amount, currencylist):
-#     if clicks is None:
-#         raise PreventUpdate
-#     else:
-#         currencycodes = currencylist[::2]
-#         currpercentages = currencylist[1::2]
-#
-#         currencycodeparsed = []
-#         for i, j in enumerate(currencycodes):
-#             currencycodeparsed.append(currencycodes[i]["props"]["children"])
-#
-#         currencypercparsed = []
-#         for i, j in enumerate(currpercentages):
-#             currencypercparsed.append(int(currpercentages[i]["props"]["value"]))
-#
-#         currency_final = dict(zip(currencycodeparsed, currencypercparsed))
-#
-#         df = generate_list_of_invoices(int(year), int(monthly), int(amount), currency_final, "Revenue")
-#         return [{"name": i, "id": i} for i in df.columns], df.to_dict('records')
-
-
 # Callback for upload and year slider.
 @app.callback([
     dash.dependencies.Output("sliderDiv", "children"),
@@ -494,21 +434,6 @@ def createDistributionChart(hidden_df):
 
 
 """Start of callbacks for exposure engine"""
-
-
-# @app.callback(
-#     Output("hidden-df-exposure", "children"),
-#     [Input("generate", "n_clicks")]
-# )
-# def storeExposureData(click):
-#     if click is None:
-#         raise PreventUpdate
-#     else:
-#         df = ce.main()
-#         df = df.sort_values(by="Year")
-#         return df.to_json(date_format="iso", orient="split")
-
-
 @app.callback(
     Output("exposure-overview", "children"),
     [
@@ -585,21 +510,6 @@ def exposureChart(exposure_type, exposure_year, hidden_df):
                     )
                 )
             ])
-
-
-# Callback for creating table of exposure dataframe
-# @app.callback(
-#     [Output("exposure-table", "columns"), Output("exposure-table", "data")],
-#     [Input("generate", "n_clicks")]
-# )
-# def exposureGenerator(clicks):
-#     if clicks is None:
-#         raise PreventUpdate
-#     else:
-#         df_exposure = calculate_exposure.main()
-#         return [{"name": i, "id": i} for i in df.columns], df.to_dict('records')
-
-
 """End of callbacks for exposure engine"""
 
 if __name__ == '__main__':
