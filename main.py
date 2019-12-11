@@ -137,12 +137,6 @@ app.layout = dbc.Container(children=[
             html.Div(className="line"),
             dbc.Button("GENERATE", id="chart-generator"),
         ]),
-
-
-        # Tab for tables or charts
-        # dbc.Tab(id="tab-two", label='Invoice Suppliers', children=[
-        #     dash_table.DataTable(id='table-supplier'),
-        # ]),
         dbc.Tab(id="tab-three", label='Invoices', labelClassName="menu", children=[
             dash_table.DataTable(id='table-invoices'),
         ]),
